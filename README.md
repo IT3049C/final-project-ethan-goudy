@@ -1,5 +1,8 @@
 # GameHub
 
+TEAM MEMBERS:
+Ethan Goudy
+
 ## Checklist
 
 - [ ] frequent commits to github.
