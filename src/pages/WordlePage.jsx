@@ -39,6 +39,10 @@ useEffect(() => {
     }
   }
 
+  function GameReset() {
+    window.location.reload()
+  }
+
   function removeLetter() {
     if (currentGuess.length > 0){
       setCurrentGuess(currentGuess.slice(0,-1));
@@ -120,6 +124,9 @@ return (
         </header>
         <div>
             <WordleGrid boardState = {boardState} currentRow = {currentRow} currentGuess = {currentGuess}></WordleGrid>
+        </div>
+        <div>
+          <button onClick={GameReset}>Reset Game</button>
         </div>
     </main>
 );

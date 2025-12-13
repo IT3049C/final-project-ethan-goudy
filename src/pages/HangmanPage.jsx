@@ -17,7 +17,9 @@ const [previousGuesses, setPreviousGuesses] = useState([])
 const [displayWord ,setDisplayWord] = useState('')
 
 
-function handleGuess(){
+
+    
+ async function handleGuess(){
     if (currentAttempt >= hmconfig.maxLives){
         setMessage("ERROR: Out of tries!")
         return;
@@ -30,32 +32,57 @@ function handleGuess(){
 
     setPreviousGuesses([...previousGuesses, guessLetter]);
 
-    const result = checkGuess(targetWord, guessLetter, displayWord);
+    const result = await checkGuess(targetWord, guessLetter, displayWord);
 
     if(!result.correct){
         setMessage(`${guessLetter} is not in the target word. lose one life.`)
-        setCurrentAttempt(currentAttempt+1)
+        const newAttemptCount = currentAttempt + 1
+        setCurrentAttempt(newAttemptCount)
+        if (newAttemptCount === hmconfig.maxLives){
+        setGameOver(true);
+        setMessage(`GAME LOST: You did not guess the word in time. Target word was ${targetWord}`)
+    }
     }
     else{
         setMessage(`Correct. ${guessLetter} found.`)
+        setDisplayWord(result.newDisplayWord)
+        if (targetWord.toLowerCase() === result.newDisplayWord){
+        setGameOver(true);
+        setMessage("Word guessed successfully! Congratulations.")
     }
+    }
+
+    
+
+    
 }
 
+async function GameReset(){
+    const newWord = await getRandomWord();
+        setTargetWord(newWord);
+        setCurrentAttempt(0);
+        setDisplayWord('_'.repeat(newWord.length));
+        setGameOver(false);
+        setPreviousGuesses([]);
+}
 
 useEffect(() => {
-    const newWord = getRandomWord();
-    setTargetWord(newWord);
-    setCurrentAttempt(0);
-    setDisplayWord('_'.repeat(newWord.length));
-    setGameOver(false);
-    setPreviousGuesses([]);
+    async function initialize() {
+        const newWord = await getRandomWord();
+        setTargetWord(newWord);
+        setCurrentAttempt(0);
+        setDisplayWord('_'.repeat(newWord.length));
+        setGameOver(false);
+        setPreviousGuesses([]);
+    }
+    initialize();
 }, [])
 
 return (
     <main>
         <header>
             <PlayerInfoCard  playerName={playerName} playerAvatar={playerAvatar}></PlayerInfoCard>
-            {currentAttempt && <p className="currentAttempt">ATTEMPTS REMAINING: {currentAttempt}</p>}
+            {currentAttempt && <p className="currentAttempt">ATTEMPTS REMAINING: {hmconfig.maxLives - currentAttempt}</p>}
             <p>MAXIMUM ATTEMPTS: {hmconfig.maxLives}</p>
             {message && <p className = "message">{message}</p>}
             <p>CURRENT PROGRESS: {displayWord}</p>
@@ -92,6 +119,7 @@ return (
                 </select>
             </label>
             <button onClick={handleGuess} disabled={gameOver}>Guess</button>
+            <button onClick={GameReset}>Restart</button>
         </div>
     </main>
 );

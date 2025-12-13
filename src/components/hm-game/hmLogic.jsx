@@ -5,7 +5,7 @@ export const hmconfig = {
 
 
 
-async function getRandomWord() {
+export async function getRandomWord() {
   const response = await fetch(
     `https://random-word-api.herokuapp.com/word?length=${hmconfig.wordLength}`
   );
@@ -33,12 +33,12 @@ export async function checkGuess(targetWord, guess, currentDisplayWord) {
     else {
       newDisplayWord += currentDisplayWord[i];
     }
+  }
 
-    return {
+   return {
       correct: isCorrect,
       newDisplayWord: newDisplayWord
     }
-  }
 }
 
 async function isValidWord(word) {
