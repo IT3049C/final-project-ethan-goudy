@@ -9,7 +9,8 @@ import { RPSGamePage } from "./pages/RPSGamePage";
 import { TicTacToePage } from "./pages/TicTacToePage";
 import {ProtectedRoute} from "./components/ProtectedRoute"
 import { applySavedTheme } from "./utils/theme";
-import { MemoryGamePage } from "./pages/MemoryGamePage";
+import { MemoryGamePage } from "./pages/HangmanPage";
+import { WordlePage } from "./pages/WordlePage";
 
 // Apply theme on app start
 applySavedTheme();
@@ -31,10 +32,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/game/memory",
+        path: "/game/hangman",
         element: (
           <ProtectedRoute>
-            <MemoryGamePage/>
+            <HangmanPage/>
           </ProtectedRoute>
         ),
       },
@@ -43,7 +44,7 @@ const router = createBrowserRouter([
         path: "/game/wordle",
         element: (
           <ProtectedRoute>
-            <MemoryGamePage/>
+            <WordlePage/>
           </ProtectedRoute>
         )
       },

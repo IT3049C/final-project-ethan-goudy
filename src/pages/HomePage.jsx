@@ -12,7 +12,7 @@ export function HomePage() {
     { key: "Wordle", name: "Wordle", description: "An implementation of Wordle."},
   ];
 
-    const filteredGames = games.filter((game) => 
+    const _filteredGames = games.filter((game) => 
     search==="" || game.name.toLowerCase().includes(search)
     //Bug in suggested version of search logic identified by Claude Sonnet
   );
