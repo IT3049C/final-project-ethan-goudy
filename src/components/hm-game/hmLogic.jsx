@@ -3,10 +3,7 @@ export const hmconfig = {
   maxLives: 10,
 };
 
-export const hmGameState = {
-  remainingLives: 0,
-  targetWord: await getRandomWord(),
-};
+
 
 async function getRandomWord() {
   const response = await fetch(
@@ -18,22 +15,30 @@ async function getRandomWord() {
   return data[0];
 }
 
-export async function checkGuess(guess) {
+export async function checkGuess(targetWord, guess, currentDisplayWord) {
   const isValid = await isValidWord(guess.toLowerCase());
   if (!isValid) {
     return null; //suggested by Copilot to fix a bug in this function
   }
-  const targetLetters = gameState.targetWord.toLowerCase().split("");
-  const guessLetters = guess.toLowerCase().split("");
+  const targetLetters = targetWord.toLowerCase();
+  const guessLetter = guess.toLowerCase();
 
-  return guessLetters.map((letter) => {
-    if (targetLetters.includes(letter)) {
-      return "correct";
-    } 
-    else {
-      return "incorrect";
+  const isCorrect = targetLetters.includes(guessLetter);
+
+  let newDisplayWord = '';
+  for (let i = 0; i < targetWord.length; i++) {
+    if (targetLetters[i] === guessLetter) {
+      newDisplayWord += guessLetter;
     }
-  });
+    else {
+      newDisplayWord += currentDisplayWord[i];
+    }
+
+    return {
+      correct: isCorrect,
+      newDisplayWord: newDisplayWord
+    }
+  }
 }
 
 async function isValidWord(word) {
