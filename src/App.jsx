@@ -1,13 +1,57 @@
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import { GameView } from "./pages/RPSGamePage";
+import { LobbyView } from "./pages/LobbyPage";
+import { loadSettings, saveSettings } from "./logic/settings";
 
-function App() {
+export function App() {
+  const initialSettings = loadSettings() || {
+    name: ``,
+    difficulty: `normal`,
+    avatar: undefined,
+    darkMode: false,
+  };
+  const [view, setView] = useState("settings");
+  const [name, setName] = useState(initialSettings.name);
+  const [avatar, setAvatar] = useState(initialSettings.avatar);
+  const [difficulty, setDifficulty] = useState(initialSettings.difficulty);
+  const [darkMode, setDarkMode] = useState(initialSettings.darkMode);
+
+  const currentTheme = darkMode ? `theme-dark` : `theme-light`;
+
+  const onGameStart = () => {
+    console.log(`onGameStart`);
+    setView("game");
+  };
+
+  const onSettingsSave = () => {
+    saveSettings({
+      name,
+      avatar,
+      difficulty,
+      darkMode,
+    });
+  };
 
   return (
-    <>
-      <h1>GameHub</h1>
-      <p>Welcome to GameHub</p>
-    </>
-  )
+    <main className={currentTheme}>
+      <h1>Games Lobby</h1>
+      <p>Hello, React 👋</p>
+      {view === `settings` && (
+        <LobbyView
+          onGameStart={onGameStart}
+          onSettingsSave={onSettingsSave}
+          name={name}
+          setName={setName}
+          avatar={avatar}
+          setAvatar={setAvatar}
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
+      )}
+      {view === `game` && <GameView playerName={name} playerAvatar={avatar} difficulty={difficulty} />}
+    </main>
+  );
 }
-
-export default App
