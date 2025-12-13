@@ -8,7 +8,7 @@ export function HomePage() {
   const games = [
     { key: "rps", name: "Rock Paper Scissors", description: "A simple game of Rock Paper Scissors" },
     { key: "tic-tac-toe", name: "Tic Tac Toe", description: "A simple game of Tic Tac Toe" },
-    { key: "memory", name: "Memory Match", description: "A card-matching game where you aim for the fewest moves."},
+    { key: "Hangman", name: "Hangman", description: "A simple word game where you must guess the letters of a hidden word."},
     { key: "Wordle", name: "Wordle", description: "An implementation of Wordle."},
   ];
 
